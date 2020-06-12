@@ -2,6 +2,7 @@ package com.example.recyclerview4
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -15,14 +16,27 @@ class MainActivity : AppCompatActivity() {
 
         val singerList: List<RecyclerView4Item> = musicList()
 
+        val recyclerView4Adapter = RecyclerView4Adapter(singerList)
+
+        recyclerView4Adapter.callback = object: RecyclerView4Adapter.RecyclerView4AdapterCallback {
+            override fun onClick(item: RecyclerView4Item) {
+                val text = "${item.text1}\n${item.text2}"
+                showToast(text)
+            }
+        }
+
         recyclerView.apply {
-            adapter = RecyclerView4Adapter(singerList)
+            adapter = recyclerView4Adapter
             layoutManager = LinearLayoutManager(this@MainActivity).apply {
                 orientation = RecyclerView.VERTICAL
 
             }
             setHasFixedSize(true)
         }
+    }
+
+    private fun showToast(text: String) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
     private fun musicList(): List<RecyclerView4Item> {
